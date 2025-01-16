@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import model.Product;
 import model.Sale;
+
 public class Shop {
 
    private Amount cash = new Amount(100.00);
@@ -37,7 +38,7 @@ public class Shop {
             System.out.println("4. Realizar venta");
             System.out.println("5. Mostrar ventas");
             System.out.println("6. Mostrar total de ventas");
-            System.out.println("0. Salir");
+            System.out.println("10. Salir");
             System.out.print("Seleccione una opción: ");
             choice = scanner.nextInt();
             scanner.nextLine();
@@ -61,14 +62,14 @@ public class Shop {
                 case 6:
                     shop.numSales();
                     break;
-                case 0:
+                case 10:
                     System.exit(0);
                     break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
                     break;
             }
-        } while (choice != 0);
+        } while (choice != 10);
     }
 
     public void showCash() {
@@ -78,7 +79,6 @@ public class Shop {
     public void loadInventory() {
         addProduct(new Product("Manzana", 10.00, true, 10));
         addProduct(new Product("Pera", 20.00, true, 20));
-        addProduct(new Product("Hamburguesa", 30.00, true, 30));
         addProduct(new Product("Fresa", 5.00, true, 20));
     }
 
@@ -90,10 +90,10 @@ public class Shop {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Nombre del producto (escriba 'salir' para cancelar): ");
+        System.out.print("Nombre del producto (escriba 'c' para cancelar): ");
         String name = scanner.nextLine();
 
-        if (name.equalsIgnoreCase("salir")) {
+        if (name.equalsIgnoreCase("c")) {
             System.out.println("Operación cancelada.");
             return;
         }
@@ -114,7 +114,7 @@ public class Shop {
         inventory[numberProducts] = newProduct;
         numberProducts++;
 
-        System.out.println("Producto añadido exitosamente: " + name);
+        System.out.println("Producto añadido: " + name);
     }
 
     private boolean productExists(String name) {
@@ -127,7 +127,7 @@ public class Shop {
     }
 
     public void showInventory() {
-        System.out.println("Contenido actual de la tienda:");
+        System.out.println("Contenido de la tienda:");
         for (Product product : inventory) {
             if (product != null) {
                 System.out.println("Producto: " + product.getName());
@@ -162,13 +162,13 @@ public class Shop {
 
         if (product != null) {
             product.setPublicPrice(new Amount(product.getPublicPrice().getValue() * 0.6));
-            System.out.println("El precio del producto " + name + " ha sido actualizado a " + product.getPublicPrice());
+            System.out.println("El precio del producto " + name + " se ha actualizado a " + product.getPublicPrice());
         }
     }
 
     public void sale() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Realizar venta, escribir nombre cliente: ");
+        System.out.print("VENTA: escribir nombre cliente: ");
         String client = scanner.nextLine();
 
         Map<String, Integer> productsSold = new HashMap<>();
@@ -197,7 +197,7 @@ public class Shop {
                         product.setAvailable(false);
                     }
                     productsSold.put(name, productsSold.getOrDefault(name, 0) + quantity);
-                    System.out.println("Producto añadido con éxito.");
+                    System.out.println("Producto añadido.");
                 }
             } else {
                 System.out.println("Producto no encontrado o sin stock.");
@@ -208,7 +208,7 @@ public class Shop {
             totalAmount.setValue(totalAmount.getValue() * TAX_RATE);
             cash.setValue(cash.getValue() + totalAmount.getValue());
             registerSale(new Sale(client, productsSold, totalAmount.getValue()));
-            System.out.println("Venta realizada con éxito. Total: " + totalAmount);
+            System.out.println("Venta realizada. Total: " + totalAmount);
         } else {
             System.out.println("No se realizó ninguna venta.");
         }
@@ -248,7 +248,7 @@ public class Shop {
             totalAmount += sales[i].getAmount().getValue();
         }
 
-        System.out.println("Total de dinero conseguido con todas las compras: " + new Amount(totalAmount));
+        System.out.println("Total de dinero conseguido: " + new Amount(totalAmount));
     }
 
     private boolean isInventoryFull() {
