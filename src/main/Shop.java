@@ -83,11 +83,6 @@ public class Shop {
     }
 
     public void addProduct(Product product) {
-        if (isInventoryFull()) {
-            System.out.println("No se pueden añadir más productos.");
-            return;
-        }
-
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Nombre del producto (escriba 'c' para cancelar): ");
@@ -251,9 +246,6 @@ public class Shop {
         System.out.println("Total de dinero conseguido: " + new Amount(totalAmount));
     }
 
-    private boolean isInventoryFull() {
-        return numberProducts >= inventory.length;
-    }
 
     private Product findProduct(String name) {
         for (Product product : inventory) {
